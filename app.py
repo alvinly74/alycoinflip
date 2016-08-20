@@ -60,8 +60,8 @@ def webook():
                         tax_value = float(message_text.split()[2:3][0])
                         costs = message_text.split()[3:-1]
                         costs = map(float, costs)
-                        tax_percentages = map(lambda price: price/total, costs)
                         total = sum(costs)
+                        tax_percentages = map(lambda price: price/total, costs)
                         grand_totals = []
                         
                         for idx in range(len(costs)):
