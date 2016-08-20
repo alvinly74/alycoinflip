@@ -44,10 +44,11 @@ def webook():
                         num_flips = int(message_text.split()[1:2][0])
                         possibilites = message_text.split()[2:-1]
                         response = "we flipped {0} number of coins and got: ".format(num_flips)
-                        flips = []
+                        flips = ""
                         for times in range(num_flips):
                             flips.append(random.choice(possibilites))
-                        response += str(flips)
+                        
+                        response += ", ".join(flips)
                     send_message(sender_id, response)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
