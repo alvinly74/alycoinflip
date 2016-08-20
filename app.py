@@ -1,7 +1,7 @@
 import os
 import sys
 import json
-
+import random
 import requests
 from flask import Flask, request
 
@@ -37,8 +37,15 @@ def webook():
                     sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
-                    # ['entry'][0]['messaging'][0]['message']['text']
-                    send_message(sender_id, message_text)
+                    response = "HAH GAYYYY"
+                    
+                    #does the 'flip' option
+                    if message_text.startswith("flip"):
+                        best_of = int(message_text.split()[1:2])
+                        possibilites = message_text.split()[2:-1]
+                        for times in range(best_of):
+                            response = response + " " + random.choice(possibilites)
+                    send_message(sender_id, response)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
