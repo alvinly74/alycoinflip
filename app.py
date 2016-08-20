@@ -55,8 +55,8 @@ def webook():
                     # does the bill split option
                     # to use, first number is how much to tip(in decimal form)
                     # second number is how much the tax total is, all numbers afterwards will add tip
-                    if message_text.startswith("split"):
-                        tip_percentage = float(message_text.split()[1:2][0])
+                    elif message_text.startswith("split"):
+                        tip_value = float(message_text.split()[1:2][0])
                         tax_value = float(message_text.split()[2:3][0])
                         costs = message_text.split()[3:-1]
                         costs = map(float, costs)
@@ -69,8 +69,19 @@ def webook():
                             grand_totals.append(total)
                         grand_totals = map(str, grand_totals)
                         response = ", ".join(grand_totals)
+                    
+                    # does the tip calculations
+                    elif message_text.startswith("tip"):
+                        response = []
+                        tip_percentages = [0.10, 0.15, 0.2, 0.25, 0.3]
+                        total = float(message_text.split()[1:2][0])
+                        for percentage in tip_percentages:
+                            percent_string = str(percentage * 100) + "%"
+                            value = ceil(total * percentage * 100)/100
+                            res_string = "{0}: {1}".format(percent_string, value)  
+                            response.append(res_string)
+                        response = ", ".join(tip_string)
                     send_message(sender_id, response)
-
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
 
