@@ -13,8 +13,10 @@ app = Flask(__name__)
 def verify():
     # when the endpoint is registered as a webhook, it must
     # return the 'hub.challenge' value in the query arguments
-    if request.args.get("hub.mode") == "subscribe" and request.args.get("hub.challenge"):
-        if not request.args.get("hub.verify_token") == os.environ["VERIFY_TOKEN"]:
+    hub_mode = request.args.get("hub.mode")
+    if hub_mode == "subscribe" and request.args.get("hub.challenge"):
+        verify_token = request.args.get("hub.verify_token")
+        if not verify_token == os.environ["VERIFY_TOKEN"]:
             return "Verification token mismatch", 403
         return request.args["hub.challenge"], 200
 
@@ -27,31 +29,36 @@ def webook():
     # endpoint for processing incoming messaging events
 
     data = request.get_json()
-    log(data)  # you may not want to log every incoming message in production, but it's good for testing
-    
+    # you may not want to log every incoming message in production,
+    # but it's good for testing
+    log(data)
+
     if data["object"] == "page":
 
         for entry in data["entry"]:
             for messaging_event in entry["messaging"]:
-
-                if messaging_event.get("message"):  # someone sent us a message
-                    sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
-                    recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
-                    message_text = messaging_event["message"]["text"]  # the message's text
-                    
+                # someone sent us a message
+                if messaging_event.get("message"):
+                    # the facebook ID of the person sending you the message
+                    sender_id = messaging_event["sender"]["id"]
+                    # the recipient's ID, which should be your
+                    # page's facebook ID
+                    recipient_id = messaging_event["recipient"]["id"]
+                    # the message's text
+                    message_text = messaging_event["message"]["text"]
                     # does the 'flip' option
-                    # to use, first number determines how many flips, all of the other items
+                    # to use, first number determines how many flips,
+                    # all of the other items
                     # after will be the items we sample from
                     if message_text.startswith("flip"):
                         num_flips = int(message_text.split()[1:2][0])
                         possibilites = message_text.split()[2:]
-                        response = "we flipped {0} number of coins and got: ".format(num_flips)
+                        response = ("we flipped {0} number of coins and got:" +
+                                    " ").format(num_flips)
                         flips = []
                         for times in range(num_flips):
                             flips.append(random.choice(possibilites))
-                        
                         response += ", ".join(flips)
-                        
                     # does the bill split option how wird
                     # to use, first number is how much to tip in $XX.XX form
                     # second number is how much the tax.
@@ -67,7 +74,8 @@ def webook():
                             tip_portion = ceil(tip_value * portion * 100) / 100
                             tax_portion = ceil(tax_value * portion * 100) / 100
                             grand_total = (price + tip_portion + tax_portion)
-                            line = "person {0} owes {1}".format(idx + 1, grand_total)
+                            line = "person {0} owes {1}".format(idx + 1,
+                                                                grand_total)
                             portions.append(line)
                         response = "\n".join(portions)
                         print response
@@ -80,7 +88,8 @@ def webook():
                         for percentage in tip_percentages:
                             percent_string = str(percentage * 100) + "%"
                             value = ceil(total * percentage * 100)/100
-                            res_string = "{0}: {1}".format(percent_string, value)  
+                            res_string = "{0}: {1}".format(percent_string,
+                                                           value)
                             tip_amounts.append(res_string)
                         response = "\n".join(tip_amounts)
                     send_message(sender_id, response)
@@ -90,7 +99,8 @@ def webook():
                 if messaging_event.get("optin"):  # optin confirmation
                     pass
 
-                if messaging_event.get("postback"):  # user clicked/tapped "postback" button in earlier message
+                # user clicked/tapped "postback" button in earlier message
+                if messaging_event.get("postback"):
                     pass
 
     return "ok", 200
@@ -98,7 +108,8 @@ def webook():
 
 def send_message(recipient_id, message_text):
 
-    log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
+    log("sending message to {recipient}: {text}".format(recipient=recipient_id,
+                                                        text=message_text))
 
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
@@ -114,7 +125,8 @@ def send_message(recipient_id, message_text):
             "text": message_text
         }
     })
-    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+                      params=params, headers=headers, data=data)
     if r.status_code != 200:
         log(r.status_code)
         log(r.text)
