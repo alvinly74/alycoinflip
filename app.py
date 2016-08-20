@@ -52,7 +52,7 @@ def webook():
                         
                         response += ", ".join(flips)
                         
-                    # does the bill split option
+                    # does the bill split option how wird
                     # to use, first number is how much to tip in $XX.XX form
                     # second number is how much the tax.
                     elif message_text.startswith("split"):
