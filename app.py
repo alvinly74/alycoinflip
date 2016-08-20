@@ -41,7 +41,7 @@ def webook():
                     
                     #does the 'flip' option
                     if message_text.startswith("flip"):
-                        best_of = int(message_text.split()[1:2])
+                        best_of = int(message_text.split()[1:2][0])
                         possibilites = message_text.split()[2:-1]
                         for times in range(best_of):
                             response = response + " " + random.choice(possibilites)
