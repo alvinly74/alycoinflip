@@ -38,14 +38,13 @@ def webook():
                     sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
-                    response = "HAH GAYYYY"
                     
                     # does the 'flip' option
                     # to use, first number determines how many flips, all of the other items
                     # after will be the items we sample from
                     if message_text.startswith("flip"):
                         num_flips = int(message_text.split()[1:2][0])
-                        possibilites = message_text.split()[2:-1]
+                        possibilites = message_text.split()[2:]
                         response = "we flipped {0} number of coins and got: ".format(num_flips)
                         flips = []
                         for times in range(num_flips):
