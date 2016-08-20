@@ -62,13 +62,16 @@ def webook():
                         split_costs = map(float, message_text.split()[3:])
                         total = sum(split_costs)
                         portions = []
-                        for price in split_costs:
+                        for idx, price in enumerate(split_costs):
                             portion = price/total
+                            price_portion = ceil(price * portion * 100) / 100
                             tip_portion = ceil(tip_value * portion * 100) / 100
-                            tax_portion = ceil(tip_value * portion * 100) / 100
-                            grand_total = (portion + tip_portion + tax_portion)
-                            response.append(str(grand_total))
-                        response = ", ".join(portions)
+                            tax_portion = ceil(tax_value * portion * 100) / 100
+                            grand_total = (price + tip_portion + tax_portion)
+                            line = "person {0} owes {1}".format(idx + 1, grand_total)
+                            portions.append(str(grand_total))
+                        response = "\n".join(portions)
+                        print response
 
                     # does the tip calculations
                     elif message_text.startswith("tip"):
@@ -78,9 +81,9 @@ def webook():
                         for percentage in tip_percentages:
                             percent_string = str(percentage * 100) + "%"
                             value = ceil(total * percentage * 100)/100
-                            res_string = "{0}: {1} \n".format(percent_string, value)  
+                            res_string = "{0}: {1}".format(percent_string, value)  
                             tip_amounts.append(res_string)
-                        response = ", ".join(tip_amounts)
+                        response = "\n".join(tip_amounts)
                     send_message(sender_id, response)
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
