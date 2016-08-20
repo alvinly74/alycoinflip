@@ -39,7 +39,9 @@ def webook():
                     message_text = messaging_event["message"]["text"]  # the message's text
                     response = "HAH GAYYYY"
                     
-                    #does the 'flip' option
+                    # does the 'flip' option
+                    # to use, first number determines how many flips, all of the other items
+                    # after will be the items we sample from
                     if message_text.startswith("flip"):
                         num_flips = int(message_text.split()[1:2][0])
                         possibilites = message_text.split()[2:-1]
@@ -49,6 +51,22 @@ def webook():
                             flips.append(random.choice(possibilites))
                         
                         response += ", ".join(flips)
+                        
+                    # does the bill split option
+                    # to use, first number is how much to tip(in decimal form)
+                    # second number is how much the tax total is, all numbers afterwards will add tip
+                    if message_text.startswith("split"):
+                        tip_percentage = float(message_text.split()[1:2][0])
+                        tax_value = float(message_text.split()[2:3][0])
+                        total = sum(costs)
+                        costs = message_text.split()[3:-1]
+                        costs = map(float, costs)
+                        tax_percentages = map(lambda price: price/total)
+                        grand_totals = []
+                        for idx in range(len(costs)):
+                            total = costs[idx] * (1 + tax_percentages[idx])
+                            totals.append(append)
+                        response = ", ".join(totals)
                     send_message(sender_id, response)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
