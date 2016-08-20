@@ -78,7 +78,7 @@ def webook():
                         for percentage in tip_percentages:
                             percent_string = str(percentage * 100) + "%"
                             value = ceil(total * percentage * 100)/100
-                            res_string = "{0}: {1}".format(percent_string, value)  
+                            res_string = "{0}: {1} \n".format(percent_string, value)  
                             tip_amounts.append(res_string)
                         response = ", ".join(tip_amounts)
                     send_message(sender_id, response)
