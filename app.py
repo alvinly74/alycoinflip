@@ -3,6 +3,7 @@ import sys
 import json
 import random
 import requests
+from math import ceil
 from flask import Flask, request
 
 app = Flask(__name__)
@@ -53,23 +54,16 @@ def webook():
                         response += ", ".join(flips)
                         
                     # does the bill split option
-                    # to use, first number is how much to tip(in decimal form)
-                    # second number is how much the tax total is, all numbers afterwards will add tip
+                    # to use, first number is how much to tip in $XX.XX form
+                    # second number is how much the tax.
                     elif message_text.startswith("split"):
                         tip_value = float(message_text.split()[1:2][0])
                         tax_value = float(message_text.split()[2:3][0])
-                        costs = message_text.split()[3:-1]
-                        costs = map(float, costs)
-                        total = sum(costs)
-                        tax_percentages = map(lambda price: price/total, costs)
-                        grand_totals = []
-                        
-                        for idx in range(len(costs)):
-                            total = costs[idx] * (1 + tax_percentages[idx])
-                            grand_totals.append(total)
-                        grand_totals = map(str, grand_totals)
-                        response = ", ".join(grand_totals)
-                    
+                        split_costs = map(float, message_text.split()[3:])
+                        total = sum(split_costs)
+                        response = []
+                        for price in split_costs:
+                             
                     # does the tip calculations
                     elif message_text.startswith("tip"):
                         response = []
