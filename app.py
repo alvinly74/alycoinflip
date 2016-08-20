@@ -41,9 +41,9 @@ def webook():
                     
                     #does the 'flip' option
                     if message_text.startswith("flip"):
-                        response = "we flipped {0} number of coins and got: ".format(num_flips)
                         num_flips = int(message_text.split()[1:2][0])
                         possibilites = message_text.split()[2:-1]
+                        response = "we flipped {0} number of coins and got: ".format(num_flips)
                         for times in range(num_flips):
                             response = response + ", " + random.choice(possibilites)
                     send_message(sender_id, response)
