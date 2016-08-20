@@ -64,23 +64,23 @@ def webook():
                         portions = []
                         for price in split_costs:
                             portion = price/total
-                            tip_portion = tip_value * portion
-                            tax_portion = tip_value * portion
+                            tip_portion = ceil(tip_value * portion * 100) / 100
+                            tax_portion = ceil(tip_value * portion * 100) / 100
                             grand_total = (portion + tip_portion + tax_portion)
                             response.append(str(grand_total))
                         response = ", ".join(portions)
 
                     # does the tip calculations
                     elif message_text.startswith("tip"):
-                        response = []
+                        tip_amounts = []
                         tip_percentages = [0.10, 0.15, 0.2, 0.25, 0.3]
                         total = float(message_text.split()[1:2][0])
                         for percentage in tip_percentages:
                             percent_string = str(percentage * 100) + "%"
                             value = ceil(total * percentage * 100)/100
                             res_string = "{0}: {1}".format(percent_string, value)  
-                            response.append(res_string)
-                        response = ", ".join(tip_string)
+                            tip_amounts.append(res_string)
+                        response = ", ".join(tip_amounts)
                     send_message(sender_id, response)
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
