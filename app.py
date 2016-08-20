@@ -41,10 +41,11 @@ def webook():
                     
                     #does the 'flip' option
                     if message_text.startswith("flip"):
-                        best_of = int(message_text.split()[1:2][0])
+                        response = "we flipped {0} number of coins and got: ".format(num_flips)
+                        num_flips = int(message_text.split()[1:2][0])
                         possibilites = message_text.split()[2:-1]
-                        for times in range(best_of):
-                            response = response + " " + random.choice(possibilites)
+                        for times in range(num_flips):
+                            response = response + ", " + random.choice(possibilites)
                     send_message(sender_id, response)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
