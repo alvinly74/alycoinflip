@@ -69,7 +69,7 @@ def webook():
                             tax_portion = ceil(tax_value * portion * 100) / 100
                             grand_total = (price + tip_portion + tax_portion)
                             line = "person {0} owes {1}".format(idx + 1, grand_total)
-                            portions.append(str(grand_total))
+                            portions.append(line)
                         response = "\n".join(portions)
                         print response
 
