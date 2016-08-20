@@ -63,9 +63,10 @@ def webook():
                         tax_percentages = map(lambda price: price/total, costs)
                         total = sum(costs)
                         grand_totals = []
+                        
                         for idx in range(len(costs)):
                             total = costs[idx] * (1 + tax_percentages[idx])
-                            totals.append(append)
+                            grand_totals.append(append)
                         response = ", ".join(totals)
                     send_message(sender_id, response)
 
