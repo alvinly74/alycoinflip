@@ -61,9 +61,15 @@ def webook():
                         tax_value = float(message_text.split()[2:3][0])
                         split_costs = map(float, message_text.split()[3:])
                         total = sum(split_costs)
-                        response = []
+                        portions = []
                         for price in split_costs:
-                             
+                            portion = price/total
+                            tip_portion = tip_value * portion
+                            tax_portion = tip_value * portion
+                            grand_total = (portion + tip_portion + tax_portion)
+                            response.append(str(grand_total))
+                        response = ", ".join(portions)
+
                     # does the tip calculations
                     elif message_text.startswith("tip"):
                         response = []
