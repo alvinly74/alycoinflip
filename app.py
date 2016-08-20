@@ -67,6 +67,7 @@ def webook():
                         for idx in range(len(costs)):
                             total = costs[idx] * (1 + tax_percentages[idx])
                             grand_totals.append(total)
+                        grand_totals = map(str, grand_totals)
                         response = ", ".join(grand_totals)
                     send_message(sender_id, response)
 
