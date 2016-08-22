@@ -46,52 +46,25 @@ def webook():
                     recipient_id = messaging_event["recipient"]["id"]
                     # the message's text
                     message_text = messaging_event["message"]["text"]
+                    request, inputs = message_text.split(None, 1) 
+                    inputs = inputs.split()
+                    if not valid_request(inputs):
+                        response = "Sorry, we do not recognize the input"
                     # does the 'flip' option
                     # to use, first number determines how many flips,
                     # all of the other items
                     # after will be the items we sample from
-                    if message_text.startswith("flip"):
-                        num_flips = int(message_text.split()[1:2][0])
-                        possibilites = message_text.split()[2:]
-                        response = ("we flipped {0} number of coins and got:" +
-                                    " ").format(num_flips)
-                        flips = []
-                        for times in range(num_flips):
-                            flips.append(random.choice(possibilites))
-                        response += ", ".join(flips)
+                    elif request == "flip" and check_valid_flip(inputs):
+                        
+
+                    # does the tip calculations
+                    elif request == "tip" and chec_valid_tip(inputs):
+                        
                     # does the bill split option how wird
                     # to use, first number is how much to tip in $XX.XX form
                     # second number is how much the tax.
-                    elif message_text.startswith("split"):
-                        tip_value = float(message_text.split()[1:2][0])
-                        tax_value = float(message_text.split()[2:3][0])
-                        split_costs = map(float, message_text.split()[3:])
-                        total = sum(split_costs)
-                        portions = []
-                        for idx, price in enumerate(split_costs):
-                            portion = price/total
-                            price_portion = ceil(price * portion * 100) / 100
-                            tip_portion = ceil(tip_value * portion * 100) / 100
-                            tax_portion = ceil(tax_value * portion * 100) / 100
-                            grand_total = (price + tip_portion + tax_portion)
-                            line = "person {0} owes {1}".format(idx + 1,
-                                                                grand_total)
-                            portions.append(line)
-                        response = "\n".join(portions)
-                        print response
-
-                    # does the tip calculations
-                    elif message_text.startswith("tip"):
-                        tip_amounts = []
-                        tip_percentages = [0.10, 0.15, 0.2, 0.25, 0.3]
-                        total = float(message_text.split()[1:2][0])
-                        for percentage in tip_percentages:
-                            percent_string = str(percentage * 100) + "%"
-                            value = ceil(total * percentage * 100)/100
-                            res_string = "{0}: {1}".format(percent_string,
-                                                           value)
-                            tip_amounts.append(res_string)
-                        response = "\n".join(tip_amounts)
+                    elif request == "split" and check_valid_split(inputs):
+                        
                     send_message(sender_id, response)
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
@@ -105,6 +78,93 @@ def webook():
 
     return "ok", 200
 
+def check_valid_flip(inputs):
+    # we need at least 3, number of sample, and at least two possibilities
+    if len(inputs) > 3 and inputs[0].isdigit():
+        return True
+        
+    return False
+    
+def do_flip(num_flips, possibilites):
+    """
+    takes number num_flips, and list of possibilities(list of strings)
+    returns a hash of possibility => frequency
+    """
+    count_dict = {}
+    for times in range(num_flips):
+        flip_value = random.choice(possibilites)
+        if count_dict.get(flip_value):
+            count_dict[flip_value] += 1
+        else:
+            count_dict[flip_value] = 1
+            
+    return count_dict
+
+def check_valid_tip(inputs):
+    """
+    inputs is a list, attempt to float all of inputs
+    as long as contents is a number and not "NaN" or "not a number",
+    this is good.
+    """
+    try: 
+        costs = map(float, inputs)
+        if any(price == float("nan") for price in costs)
+            raise ValueError
+    except ValueError:
+        return False
+    else:
+        return True
+        
+def do_tip(price):
+    tip_amounts = []
+    tip_percentages = [0.10, 0.15, 0.2, 0.25, 0.3]
+    for percentage in tip_percentages:
+        percent_string = str(percentage * 100) + "%"
+        value = ceil(price * percentage * 100)/100
+        res_string = "{0}: {1}".format(percent_string,
+                                       value)
+        tip_amounts.append(res_string)
+    return tip_amounts
+    
+def check_valid_split(inputs):
+    """
+    tries to check if all inputs we have are valid numbers(floats)
+    """
+    try:
+        numbers = map(float, inputs)
+    # something in inputs isn't 'float' able
+    except ValueError:
+        return False
+    else:
+        return True
+        
+def do_split(tip, tax, prices):
+    """
+    takes floats tax and tip, and list of floats prices.
+    returns an array of adjusted prices with proprotioned tax and tip added
+    to each price.
+    """
+    total = sum(prices)
+    portions = []
+    for idx, price in enumerate(prices):
+        portion = price/total
+        price_portion = ceil(price * portion * 100) / 100
+        tip_portion = ceil(tip * portion * 100) / 100
+        tax_portion = ceil(tax * portion * 100) / 100
+        grand_total = (price + tip_portion + tax_portion)
+        portions.append(grand_total)
+    return portions
+
+
+def valid_request(inputs):
+    """
+    checks if the text given by user is a valid input.
+    At this time, we can only handle 'flip' 'tip', and 'split'
+    """
+    valid_inputs = ["flip", "tip", "split"]
+    if request in valid_inputs:
+        return True
+    return False
 
 def send_message(recipient_id, message_text):
 
