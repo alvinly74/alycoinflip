@@ -36,6 +36,7 @@ def webook():
     if data["object"] == "page":
         for entry in data["entry"]:
             for messaging_event in entry["messaging"]:
+                log("what am I doing!?")
                 # someone sent us a message
                 if messaging_event.get("message"):
                     # the facebook ID of the person sending you the message
