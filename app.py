@@ -34,7 +34,6 @@ def webook():
     log(data)
 
     if data["object"] == "page":
-        # yolo
         for entry in data["entry"]:
             for messaging_event in entry["messaging"]:
                 # someone sent us a message
@@ -55,16 +54,16 @@ def webook():
                     # all of the other items
                     # after will be the items we sample from
                     elif request == "flip" and check_valid_flip(inputs):
-
+                        response = "flipping"
 
                     # does the tip calculations
                     elif request == "tip" and chec_valid_tip(inputs):
-
+                        response = "tip"
                     # does the bill split option how wird
                     # to use, first number is how much to tip in $XX.XX form
                     # second number is how much the tax.
                     elif request == "split" and check_valid_split(inputs):
-
+                        response = "split"
                     send_message(sender_id, response)
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
