@@ -107,7 +107,7 @@ def check_valid_tip(inputs):
     """
     try:
         costs = map(float, inputs)
-        if any(price == float("nan") for price in costs)
+        if any(price == float("nan") for price in costs):
             raise ValueError
     except ValueError:
         return False
