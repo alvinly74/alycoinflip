@@ -34,7 +34,7 @@ def webook():
     log(data)
 
     if data["object"] == "page":
-
+        # yolo
         for entry in data["entry"]:
             for messaging_event in entry["messaging"]:
                 # someone sent us a message
@@ -46,7 +46,7 @@ def webook():
                     recipient_id = messaging_event["recipient"]["id"]
                     # the message's text
                     message_text = messaging_event["message"]["text"]
-                    request, inputs = message_text.split(None, 1) 
+                    request, inputs = message_text.split(None, 1)
                     inputs = inputs.split()
                     if not valid_request(inputs):
                         response = "Sorry, we do not recognize the input"
@@ -55,16 +55,16 @@ def webook():
                     # all of the other items
                     # after will be the items we sample from
                     elif request == "flip" and check_valid_flip(inputs):
-                        
+
 
                     # does the tip calculations
                     elif request == "tip" and chec_valid_tip(inputs):
-                        
+
                     # does the bill split option how wird
                     # to use, first number is how much to tip in $XX.XX form
                     # second number is how much the tax.
                     elif request == "split" and check_valid_split(inputs):
-                        
+
                     send_message(sender_id, response)
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
@@ -82,9 +82,9 @@ def check_valid_flip(inputs):
     # we need at least 3, number of sample, and at least two possibilities
     if len(inputs) > 3 and inputs[0].isdigit():
         return True
-        
+
     return False
-    
+
 def do_flip(num_flips, possibilites):
     """
     takes number num_flips, and list of possibilities(list of strings)
@@ -97,7 +97,7 @@ def do_flip(num_flips, possibilites):
             count_dict[flip_value] += 1
         else:
             count_dict[flip_value] = 1
-            
+
     return count_dict
 
 def check_valid_tip(inputs):
@@ -106,7 +106,7 @@ def check_valid_tip(inputs):
     as long as contents is a number and not "NaN" or "not a number",
     this is good.
     """
-    try: 
+    try:
         costs = map(float, inputs)
         if any(price == float("nan") for price in costs)
             raise ValueError
@@ -114,7 +114,7 @@ def check_valid_tip(inputs):
         return False
     else:
         return True
-        
+
 def do_tip(price):
     tip_amounts = []
     tip_percentages = [0.10, 0.15, 0.2, 0.25, 0.3]
@@ -125,7 +125,7 @@ def do_tip(price):
                                        value)
         tip_amounts.append(res_string)
     return tip_amounts
-    
+
 def check_valid_split(inputs):
     """
     tries to check if all inputs we have are valid numbers(floats)
@@ -137,7 +137,7 @@ def check_valid_split(inputs):
         return False
     else:
         return True
-        
+
 def do_split(tip, tax, prices):
     """
     takes floats tax and tip, and list of floats prices.
