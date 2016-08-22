@@ -28,7 +28,7 @@ def webook():
 
     # endpoint for processing incoming messaging events
 
-    data = request.get_json()
+    data = requests.get_json()
     # you may not want to log every incoming message in production,
     # but it's good for testing
     log(data)
@@ -78,12 +78,14 @@ def webook():
 
     return "ok", 200
 
+
 def check_valid_flip(inputs):
     # we need at least 3, number of sample, and at least two possibilities
     if len(inputs) > 3 and inputs[0].isdigit():
         return True
 
     return False
+
 
 def do_flip(num_flips, possibilites):
     """
@@ -100,6 +102,7 @@ def do_flip(num_flips, possibilites):
 
     return count_dict
 
+
 def check_valid_tip(inputs):
     """
     inputs is a list, attempt to float all of inputs
@@ -115,6 +118,7 @@ def check_valid_tip(inputs):
     else:
         return True
 
+
 def do_tip(price):
     tip_amounts = []
     tip_percentages = [0.10, 0.15, 0.2, 0.25, 0.3]
@@ -125,6 +129,7 @@ def do_tip(price):
                                        value)
         tip_amounts.append(res_string)
     return tip_amounts
+
 
 def check_valid_split(inputs):
     """
@@ -137,6 +142,7 @@ def check_valid_split(inputs):
         return False
     else:
         return True
+
 
 def do_split(tip, tax, prices):
     """
@@ -165,6 +171,7 @@ def valid_request(inputs):
     if request in valid_inputs:
         return True
     return False
+
 
 def send_message(recipient_id, message_text):
 
