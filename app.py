@@ -90,15 +90,16 @@ def check_valid_flip(inputs):
     return False
 
 
-def do_flips(num_flips, possibilites):
+def do_flips(num_flips, possibilities):
     """
     takes number num_flips, and list of possibilities(list of strings)
     returns a hash of possibility => frequency
     """
+    log("got inputs num_flips = {0} and possibilities = {1}".format(num_flips, possibilities))
     num_flips = int(num_flips)
     count_dict = {}
     for times in range(num_flips):
-        flip_value = random.choice(possibilites)
+        flip_value = random.choice(possibilities)
         if count_dict.get(flip_value):
             count_dict[flip_value] += 1
         else:
