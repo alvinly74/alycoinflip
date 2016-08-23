@@ -52,7 +52,8 @@ def webook():
                     if function == "flip" and check_valid_flip(inputs):
                         
                         num_flips, possibilities = inputs.split(None, 1)
-                        response = "I flipped {0} number of times, and got:\n".format(num_flips)
+                        possibilities = possibilities.split()
+                        response = "I flipped {0} time(s), and got:\n".format(num_flips)
                         distribution = do_flips(num_flips, possibilities)
                         for option, count in distribution.iteritems():
                             response += "{0}: {1}\n".format(option, count)
@@ -68,7 +69,6 @@ def webook():
                         response = "split"
                     
                     send_message(sender_id, response)
-                    send_message(sender_id, function)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
