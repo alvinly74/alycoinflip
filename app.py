@@ -42,7 +42,7 @@ def webook():
                     recipient_id = messaging_event["recipient"]["id"]
                     # the message's text
                     message_text = messaging_event["message"]["text"]
-                    request, inputs = message_text.split(None, 1)
+                    function, inputs = message_text.split(None, 1)
                     inputs = inputs.split()
                     if not valid_request(inputs):
                         response = "Sorry, we do not recognize the input"
@@ -50,16 +50,16 @@ def webook():
                     # to use, first number determines how many flips,
                     # all of the other items
                     # after will be the items we sample from
-                    elif request == "flip" and check_valid_flip(inputs):
+                    elif function == "flip" and check_valid_flip(inputs):
                         response = "flipping"
 
                     # does the tip calculations
-                    elif request == "tip" and chec_valid_tip(inputs):
+                    elif function == "tip" and chec_valid_tip(inputs):
                         response = "tip"
                     # does the bill split option how wird
                     # to use, first number is how much to tip in $XX.XX form
                     # second number is how much the tax.
-                    elif request == "split" and check_valid_split(inputs):
+                    elif function == "split" and check_valid_split(inputs):
                         response = "split"
                     send_message(sender_id, response)
 
