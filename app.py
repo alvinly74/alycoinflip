@@ -51,7 +51,8 @@ def webook():
                     # after will be the items we sample from
                     log(check_valid_flip(inputs))
                     if function == "flip" and check_valid_flip(inputs):
-                        num_flips, possibilities = message_text.split(None, 1)
+                        
+                        num_flips, possibilities = inputs.split(None, 1)
                         response = "I flipped {0} number of times, and got:\n".format(num_flips)
                         distribution = do_flips(num_flips, possibilities)
                         for option, count in distribution.iteritems():
