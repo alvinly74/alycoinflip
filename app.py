@@ -53,7 +53,7 @@ def webook():
                         response = "flipping"
 
                     # does the tip calculations
-                    elif function == "tip" and chec_valid_tip(inputs):
+                    elif function == "tip" and check_valid_tip(inputs):
                         response = "tip"
                     # does the bill split option how wird
                     # to use, first number is how much to tip in $XX.XX form
@@ -63,7 +63,7 @@ def webook():
                     
                     send_message(sender_id, response)
                     send_message(sender_id, function)
-                    send_message(sender_id, inputs)
+                    send_message(sender_id, str(inputs))
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
@@ -192,7 +192,7 @@ def webook():
 # 
 def check_valid_flip(inputs):
     # we need at least 3, number of sample, and at least two possibilities
-    if len(inputs) > 3 and inputs[0].isdigit():
+    if len(inputs) > 2 and inputs[0].isdigit():
         return True
 
     return False
