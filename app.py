@@ -111,59 +111,59 @@ def verify():
 
 
 @app.route('/', methods=['POST'])
-def webook():
-
-    # endpoint for processing incoming messaging events
-
-    data = request.get_json()
-    # you may not want to log every incoming message in production,
-    # but it's good for testing
-    log(data)
-
-    if data["object"] == "page":
-        for entry in data["entry"]:
-            for messaging_event in entry["messaging"]:
-                log("what am I doing!?")
-                # someone sent us a message
-                if messaging_event.get("message"):
-                    # the facebook ID of the person sending you the message
-                    sender_id = messaging_event["sender"]["id"]
-                    # the recipient's ID, which should be your
-                    # page's facebook ID
-                    recipient_id = messaging_event["recipient"]["id"]
-                    # the message's text
-                    message_text = messaging_event["message"]["text"]
-                    request, inputs = message_text.split(None, 1)
-                    inputs = inputs.split()
-                    if not valid_request(inputs):
-                        response = "Sorry, we do not recognize the input"
-                    # does the 'flip' option
-                    # to use, first number determines how many flips,
-                    # all of the other items
-                    # after will be the items we sample from
-                    elif request == "flip" and check_valid_flip(inputs):
-                        response = "flipping"
-
-                    # does the tip calculations
-                    elif request == "tip" and chec_valid_tip(inputs):
-                        response = "tip"
-                    # does the bill split option how wird
-                    # to use, first number is how much to tip in $XX.XX form
-                    # second number is how much the tax.
-                    elif request == "split" and check_valid_split(inputs):
-                        response = "split"
-                    send_message(sender_id, response)
-                if messaging_event.get("delivery"):  # delivery confirmation
-                    pass
-
-                if messaging_event.get("optin"):  # optin confirmation
-                    pass
-
-                # user clicked/tapped "postback" button in earlier message
-                if messaging_event.get("postback"):
-                    pass
-
-    return "ok", 200
+# def webook():
+# 
+#     # endpoint for processing incoming messaging events
+# 
+#     data = request.get_json()
+#     # you may not want to log every incoming message in production,
+#     # but it's good for testing
+#     log(data)
+# 
+#     if data["object"] == "page":
+#         for entry in data["entry"]:
+#             for messaging_event in entry["messaging"]:
+#                 log("what am I doing!?")
+#                 # someone sent us a message
+#                 if messaging_event.get("message"):
+#                     # the facebook ID of the person sending you the message
+#                     sender_id = messaging_event["sender"]["id"]
+#                     # the recipient's ID, which should be your
+#                     # page's facebook ID
+#                     recipient_id = messaging_event["recipient"]["id"]
+#                     # the message's text
+#                     message_text = messaging_event["message"]["text"]
+#                     request, inputs = message_text.split(None, 1)
+#                     inputs = inputs.split()
+#                     if not valid_request(inputs):
+#                         response = "Sorry, we do not recognize the input"
+#                     # does the 'flip' option
+#                     # to use, first number determines how many flips,
+#                     # all of the other items
+#                     # after will be the items we sample from
+#                     elif request == "flip" and check_valid_flip(inputs):
+#                         response = "flipping"
+# 
+#                     # does the tip calculations
+#                     elif request == "tip" and chec_valid_tip(inputs):
+#                         response = "tip"
+#                     # does the bill split option how wird
+#                     # to use, first number is how much to tip in $XX.XX form
+#                     # second number is how much the tax.
+#                     elif request == "split" and check_valid_split(inputs):
+#                         response = "split"
+#                     send_message(sender_id, response)
+#                 if messaging_event.get("delivery"):  # delivery confirmation
+#                     pass
+# 
+#                 if messaging_event.get("optin"):  # optin confirmation
+#                     pass
+# 
+#                 # user clicked/tapped "postback" button in earlier message
+#                 if messaging_event.get("postback"):
+#                     pass
+# 
+#     return "ok", 200
 
 
 def check_valid_flip(inputs):
