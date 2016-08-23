@@ -33,34 +33,35 @@ def webook():
         for entry in data["entry"]:
             for messaging_event in entry["messaging"]:
 
-                if messaging_event.get("message"):  # someone sent us a message
-                                    # the facebook ID of the person sending you the message
-                                    sender_id = messaging_event["sender"]["id"]
-                                    # the recipient's ID, which should be your
-                                    # page's facebook ID
-                                    recipient_id = messaging_event["recipient"]["id"]
-                                    # the message's text
-                                    message_text = messaging_event["message"]["text"]
-                                    request, inputs = message_text.split(None, 1)
-                                    inputs = inputs.split()
-                                    if not valid_request(inputs):
-                                        response = "Sorry, we do not recognize the input"
-                                    # does the 'flip' option
-                                    # to use, first number determines how many flips,
-                                    # all of the other items
-                                    # after will be the items we sample from
-                                    elif request == "flip" and check_valid_flip(inputs):
-                                        response = "flipping"
-                
-                                    # does the tip calculations
-                                    elif request == "tip" and chec_valid_tip(inputs):
-                                        response = "tip"
-                                    # does the bill split option how wird
-                                    # to use, first number is how much to tip in $XX.XX form
-                                    # second number is how much the tax.
-                                    elif request == "split" and check_valid_split(inputs):
-                                        response = "split"
-                                    send_message(sender_id, response)
+                if messaging_event.get("message"):  
+                    # someone sent us a message
+                    # the facebook ID of the person sending you the message
+                    sender_id = messaging_event["sender"]["id"]
+                    # the recipient's ID, which should be your
+                    # page's facebook ID
+                    recipient_id = messaging_event["recipient"]["id"]
+                    # the message's text
+                    message_text = messaging_event["message"]["text"]
+                    request, inputs = message_text.split(None, 1)
+                    inputs = inputs.split()
+                    if not valid_request(inputs):
+                        response = "Sorry, we do not recognize the input"
+                    # does the 'flip' option
+                    # to use, first number determines how many flips,
+                    # all of the other items
+                    # after will be the items we sample from
+                    elif request == "flip" and check_valid_flip(inputs):
+                        response = "flipping"
+
+                    # does the tip calculations
+                    elif request == "tip" and chec_valid_tip(inputs):
+                        response = "tip"
+                    # does the bill split option how wird
+                    # to use, first number is how much to tip in $XX.XX form
+                    # second number is how much the tax.
+                    elif request == "split" and check_valid_split(inputs):
+                        response = "split"
+                    send_message(sender_id, response)
 
                     sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
