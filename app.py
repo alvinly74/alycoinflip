@@ -44,7 +44,7 @@ def webook():
                     message_text = messaging_event["message"]["text"]
                     function, inputs = message_text.split(None, 1)
                     inputs = inputs.split()
-                    if not valid_request(inputs):
+                    if not valid_request(function):
                         response = "Sorry, we do not recognize the input"
                     # does the 'flip' option
                     # to use, first number determines how many flips,
@@ -274,13 +274,13 @@ def do_split(tip, tax, prices):
     return portions
 
 
-def valid_request(inputs):
+def valid_request(function):
     """
     checks if the text given by user is a valid input.
     At this time, we can only handle 'flip' 'tip', and 'split'
     """
     valid_inputs = ["flip", "tip", "split"]
-    if request in valid_inputs:
+    if function in valid_inputs:
         return True
     return False
 
