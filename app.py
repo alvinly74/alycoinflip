@@ -1,9 +1,8 @@
 import os
 import sys
 import json
-import random
+
 import requests
-from math import ceil
 from flask import Flask, request
 
 app = Flask(__name__)
@@ -13,10 +12,8 @@ app = Flask(__name__)
 def verify():
     # when the endpoint is registered as a webhook, it must
     # return the 'hub.challenge' value in the query arguments
-    hub_mode = request.args.get("hub.mode")
-    if hub_mode == "subscribe" and request.args.get("hub.challenge"):
-        verify_token = request.args.get("hub.verify_token")
-        if not verify_token == os.environ["VERIFY_TOKEN"]:
+    if request.args.get("hub.mode") == "subscribe" and request.args.get("hub.challenge"):
+        if not request.args.get("hub.verify_token") == os.environ["VERIFY_TOKEN"]:
             return "Verification token mismatch", 403
         return request.args["hub.challenge"], 200
 
@@ -24,11 +21,128 @@ def verify():
 
 
 @app.route('/', methods=['POST'])
+def webook():
+
+    # endpoint for processing incoming messaging events
+
+    data = request.get_json()
+    log(data)  # you may not want to log every incoming message in production, but it's good for testing
+
+    if data["object"] == "page":
+
+        for entry in data["entry"]:
+            for messaging_event in entry["messaging"]:
+
+                if messaging_event.get("message"):  # someone sent us a message
+                                    # the facebook ID of the person sending you the message
+                                    sender_id = messaging_event["sender"]["id"]
+                                    # the recipient's ID, which should be your
+                                    # page's facebook ID
+                                    recipient_id = messaging_event["recipient"]["id"]
+                                    # the message's text
+                                    message_text = messaging_event["message"]["text"]
+                                    request, inputs = message_text.split(None, 1)
+                                    inputs = inputs.split()
+                                    if not valid_request(inputs):
+                                        response = "Sorry, we do not recognize the input"
+                                    # does the 'flip' option
+                                    # to use, first number determines how many flips,
+                                    # all of the other items
+                                    # after will be the items we sample from
+                                    elif request == "flip" and check_valid_flip(inputs):
+                                        response = "flipping"
+                
+                                    # does the tip calculations
+                                    elif request == "tip" and chec_valid_tip(inputs):
+                                        response = "tip"
+                                    # does the bill split option how wird
+                                    # to use, first number is how much to tip in $XX.XX form
+                                    # second number is how much the tax.
+                                    elif request == "split" and check_valid_split(inputs):
+                                        response = "split"
+                                    send_message(sender_id, response)
+
+                    sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
+                    recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
+                    message_text = messaging_event["message"]["text"]  # the message's text
+
+                    send_message(sender_id, "got it, thanks!")
+
+                if messaging_event.get("delivery"):  # delivery confirmation
+                    pass
+
+                if messaging_event.get("optin"):  # optin confirmation
+                    pass
+
+                if messaging_event.get("postback"):  # user clicked/tapped "postback" button in earlier message
+                    pass
+
+    return "ok", 200
+
+
+# def send_message(recipient_id, message_text):
+# 
+#     log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
+# 
+#     params = {
+#         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+#     }
+#     headers = {
+#         "Content-Type": "application/json"
+#     }
+#     data = json.dumps({
+#         "recipient": {
+#             "id": recipient_id
+#         },
+#         "message": {
+#             "text": message_text
+#         }
+#     })
+#     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+#     if r.status_code != 200:
+#         log(r.status_code)
+#         log(r.text)
+# 
+# 
+# def log(message):  # simple wrapper for logging to stdout on heroku
+#     print str(message)
+#     sys.stdout.flush()
+# 
+# 
+# if __name__ == '__main__':
+    # app.run(debug=True)
+
+# import os
+# import sys
+# import json
+# import random
+# import requests
+# from math import ceil
+# from flask import Flask, request
+# 
+# app = Flask(__name__)
+# 
+# 
+# @app.route('/', methods=['GET'])
+# def verify():
+#     # when the endpoint is registered as a webhook, it must
+#     # return the 'hub.challenge' value in the query arguments
+#     hub_mode = request.args.get("hub.mode")
+#     if hub_mode == "subscribe" and request.args.get("hub.challenge"):
+#         verify_token = request.args.get("hub.verify_token")
+#         if not verify_token == os.environ["VERIFY_TOKEN"]:
+#             return "Verification token mismatch", 403
+#         return request.args["hub.challenge"], 200
+# 
+#     return "Hello world", 200
+# 
+# 
+# @app.route('/', methods=['POST'])
 # def webook():
 # 
 #     # endpoint for processing incoming messaging events
 # 
-#     data = request.get_json()
+#     data = requests.get_json()
 #     # you may not want to log every incoming message in production,
 #     # but it's good for testing
 #     log(data)
@@ -77,8 +191,8 @@ def verify():
 #                     pass
 # 
 #     return "ok", 200
-
-
+# 
+# 
 def check_valid_flip(inputs):
     # we need at least 3, number of sample, and at least two possibilities
     if len(inputs) > 3 and inputs[0].isdigit():
