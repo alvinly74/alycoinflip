@@ -61,13 +61,10 @@ def webook():
                     # second number is how much the tax.
                     elif function == "split" and check_valid_split(inputs):
                         response = "split"
+                    
                     send_message(sender_id, response)
-
-                    sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
-                    recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
-                    message_text = messaging_event["message"]["text"]  # the message's text
-
-                    send_message(sender_id, "got it, thanks!")
+                    send_message(sender_id, function)
+                    send_message(sender_id, inputs)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
