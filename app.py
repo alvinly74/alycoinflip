@@ -49,6 +49,7 @@ def webook():
                     # to use, first number determines how many flips,
                     # all of the other items
                     # after will be the items we sample from
+                    log(check_valid_flip(inputs))
                     if function == "flip" and check_valid_flip(inputs):
                         response = "flipping"
 
@@ -63,7 +64,6 @@ def webook():
                     
                     send_message(sender_id, response)
                     send_message(sender_id, function)
-                    send_message(sender_id, str(inputs))
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
