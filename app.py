@@ -44,13 +44,12 @@ def webook():
                     message_text = messaging_event["message"]["text"]
                     function, inputs = message_text.split(None, 1)
                     inputs = inputs.split()
-                    if not valid_request(function):
-                        response = "Sorry, we do not recognize the input"
+                    response = "Sorry, we do not recognize the input"
                     # does the 'flip' option
                     # to use, first number determines how many flips,
                     # all of the other items
                     # after will be the items we sample from
-                    elif function == "flip" and check_valid_flip(inputs):
+                    if function == "flip" and check_valid_flip(inputs):
                         response = "flipping"
 
                     # does the tip calculations
