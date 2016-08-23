@@ -43,7 +43,6 @@ def webook():
                     # the message's text
                     message_text = messaging_event["message"]["text"]
                     function, inputs = message_text.split(None, 1)
-                    inputs = inputs.split()
                     response = "Sorry, we do not recognize the input"
                     # does the 'flip' option
                     # to use, first number determines how many flips,
