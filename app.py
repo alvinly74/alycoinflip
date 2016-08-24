@@ -170,6 +170,9 @@ def do_split(tip, tax, prices):
     returns an array of adjusted prices with proprotioned tax and tip added
     to each price.
     """
+    tip = float(tip)
+    tax = float(tax)
+    prices = map(float, prices)
     total = sum(prices)
     portions = []
     for idx, price in enumerate(prices):
