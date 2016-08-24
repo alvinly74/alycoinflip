@@ -44,11 +44,10 @@ def webook():
                     # the message's text
                     message_text = messaging_event["message"]["text"]
                     try:
-                        log("we're trying to split '{0}'".format(message_text))
                         function, inputs = message_text.split(None, 1)
                     except ValueError:
                         log("and we got an error")
-                        function = "error"
+                        function = "help"
                         continue
                     response = "Sorry, I do not recognize the input"
                     # does the 'flip' option
@@ -65,7 +64,7 @@ def webook():
                     # does the tip calculations
                     elif function == "tip" and check_valid_tip(inputs):
                         tip_values = do_tip(inputs)
-                        response = "Here are some percentages for price [{0}]:\n".format(inputs)
+                        response = "Here are some percentages for bill [${0}]:\n".format(inputs)
                         for value in tip_values:
                             response += "{0}\n".format(value)
                     # does the bill split option how wird
