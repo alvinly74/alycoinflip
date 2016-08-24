@@ -44,8 +44,10 @@ def webook():
                     # the message's text
                     message_text = messaging_event["message"]["text"]
                     try:
+                        log("we're trying to split '{0}'".format(message_text))
                         function, inputs = message_text.split(None, 1)
                     except ValueError:
+                        log("and we got an error")
                         function = "error"
                         continue
                     response = "Sorry, I do not recognize the input"
@@ -140,7 +142,7 @@ def check_valid_tip(inputs):
 def do_tip(price):
     price = float(price)
     tip_amounts = []
-    tip_percentages = [0.10, 0.15, 0.2, 0.25, 0.3]
+    tip_percentages = [.15, .18, .20, .22]
     for percentage in tip_percentages:
         percent_string = str(percentage * 100) + "%"
         value = ceil(price * percentage * 100)/100
