@@ -81,6 +81,7 @@ def webook():
                         for idx, price in enumerate(prices):
                             response += "person {0} owes: ${1}\n".format(idx + 1, price)
                         response += "The grand total I calculated is ${0} due to rounding.\n".format(sum(prices))
+                        inputs = map(float, inputs)
                         response += "The grand total of the numbers inputted is ${0}.".format(sum(inputs))
                         
                             
