@@ -69,6 +69,7 @@ def webook():
                     # to use, first number is how much to tip in $XX.XX form
                     # second number is how much the tax.
                     elif function == "split" and check_valid_split(inputs):
+                        log(inputs)
                         response = "split"
                     
                     send_message(sender_id, response)
@@ -144,6 +145,7 @@ def check_valid_split(inputs):
     tries to check if all inputs we have are valid numbers(floats)
     """
     try:
+        log("we got inputs {0}".format(inputs))
         numbers = map(float, inputs)
     # something in inputs isn't 'float' able
     except ValueError:
