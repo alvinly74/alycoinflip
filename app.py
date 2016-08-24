@@ -80,6 +80,7 @@ def webook():
                         response = ""
                         for idx, price in enumerate(prices):
                             response += "person {0} owes: {1}\n".format(idx + 1, price)
+                        response += "the grand total I calculated is {0}".format(sum(prices))
                             
                         
                     
@@ -141,7 +142,7 @@ def check_valid_tip(inputs):
 def do_tip(price):
     price = float(price)
     tip_amounts = []
-    tip_percentages = [.15, .18, .20, .22]
+    tip_percentages = [.10, .125 .15, .175, 20]
     for percentage in tip_percentages:
         percent_string = str(percentage * 100) + "%"
         value = ceil(price * percentage * 100)/100
