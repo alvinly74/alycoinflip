@@ -79,8 +79,10 @@ def webook():
                         prices = do_split(tip_value, tax_value, prices)
                         response = ""
                         for idx, price in enumerate(prices):
-                            response += "person {0} owes: {1}\n".format(idx + 1, price)
-                        response += "the grand total I calculated is {0}".format(sum(prices))
+                            response += "person {0} owes: ${1}\n".format(idx + 1, price)
+                        response += "The grand total I calculated is ${0} due to rounding.\n".format(sum(prices))
+                        response += "The grand total of the numbers inputted is ${0}.".format(sum(inputs))
+                        
                             
                     send_message(sender_id, response)
 
