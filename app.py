@@ -68,7 +68,9 @@ def webook():
                     # does the bill split option how wird
                     # to use, first number is how much to tip in $XX.XX form
                     # second number is how much the tax.
-                    elif function == "split" and check_valid_split(inputs): 
+                    elif function == "split" and check_valid_split(inputs):
+                        log("inputs = {0}".format(inputs))
+                        log(type(inputs))
                         tip_value = inputs[0]
                         tax_value = inputs[1]
                         prices = inputs[2:]
