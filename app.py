@@ -69,8 +69,7 @@ def webook():
                     # to use, first number is how much to tip in $XX.XX form
                     # second number is how much the tax.
                     elif function == "split" and check_valid_split(inputs):
-                        log("inputs = {0}".format(inputs))
-                        log(type(inputs))
+                        inputs = inputs.split()
                         tip_value = inputs[0]
                         tax_value = inputs[1]
                         prices = inputs[2:]
@@ -175,6 +174,8 @@ def do_split(tip, tax, prices):
     tip = float(tip)
     tax = float(tax)
     prices = map(float, prices)
+    log("do_split type {0}".format(type(prices)))
+    log("do_split price {0}".format(prices))
     total = sum(prices)
     portions = []
     for idx, price in enumerate(prices):
