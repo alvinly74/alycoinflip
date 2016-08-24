@@ -43,25 +43,24 @@ def webook():
                     # the message's text
                     message_text = messaging_event["message"]["text"]
                     function, inputs = message_text.split(None, 1)
-                    response = "Sorry, we do not recognize the input"
+                    response = "Sorry, I do not recognize the input"
                     # does the 'flip' option
                     # to use, first number determines how many flips,
                     # all of the other items
                     # after will be the items we sample from
-                    log(check_valid_flip(inputs))
                     if function == "flip" and check_valid_flip(inputs):
-                        
                         num_flips, possibilities = inputs.split(None, 1)
                         possibilities = possibilities.split()
                         response = "I flipped {0} time(s), and got:\n".format(num_flips)
                         distribution = do_flips(num_flips, possibilities)
                         for option, count in distribution.iteritems():
                             response += "{0}: {1}\n".format(option, count)
-                        
-
                     # does the tip calculations
                     elif function == "tip" and check_valid_tip(inputs):
-                        response = "tip"
+                        tip_values = do_tip(inputs)
+                        response = "Here are some percentages for price [{0}]:\n".format(inputs)
+                        for value in tip_values:
+                            response += "{0}\n".format(value)
                     # does the bill split option how wird
                     # to use, first number is how much to tip in $XX.XX form
                     # second number is how much the tax.
@@ -95,7 +94,6 @@ def do_flips(num_flips, possibilities):
     takes number num_flips, and list of possibilities(list of strings)
     returns a hash of possibility => frequency
     """
-    log("got inputs num_flips = {0} and possibilities = {1}".format(num_flips, possibilities))
     num_flips = int(num_flips)
     count_dict = {}
     for times in range(num_flips):
@@ -125,6 +123,7 @@ def check_valid_tip(inputs):
 
 
 def do_tip(price):
+    price = float(price)
     tip_amounts = []
     tip_percentages = [0.10, 0.15, 0.2, 0.25, 0.3]
     for percentage in tip_percentages:
