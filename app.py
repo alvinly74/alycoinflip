@@ -152,6 +152,7 @@ def check_valid_split(inputs):
     """
     tries to check if all inputs we have are valid numbers(floats)
     """
+    inputs = inputs.split()
     try:
         log("we got inputs {0}".format(inputs))
         log("type = {0}".format(type(inputs)))
