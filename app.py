@@ -76,7 +76,7 @@ def webook():
                         log("tip = {0}, tax = {1} prices = {2}".format(tip_value, tax_value, prices))
                         prices = do_split(tip_value, tax_value, prices)
                         response = ""
-                        for price, idx in enumerate(prices):
+                        for idx, price in enumerate(prices):
                             response += "person {0} owes: {1}\n".format(idx + 1, price)
                             
                         
