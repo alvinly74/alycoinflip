@@ -82,8 +82,6 @@ def webook():
                             response += "person {0} owes: {1}\n".format(idx + 1, price)
                         response += "the grand total I calculated is {0}".format(sum(prices))
                             
-                        
-                    
                     send_message(sender_id, response)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
@@ -142,7 +140,7 @@ def check_valid_tip(inputs):
 def do_tip(price):
     price = float(price)
     tip_amounts = []
-    tip_percentages = [.10, .125 .15, .175, 20]
+    tip_percentages = [.10, .125, .15, .175, 20]
     for percentage in tip_percentages:
         percent_string = str(percentage * 100) + "%"
         value = ceil(price * percentage * 100)/100
