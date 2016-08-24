@@ -154,6 +154,7 @@ def check_valid_split(inputs):
     """
     try:
         log("we got inputs {0}".format(inputs))
+        log("type = {0}".format(type(inputs)))
         numbers = map(float, inputs)
     # something in inputs isn't 'float' able
     except ValueError:
