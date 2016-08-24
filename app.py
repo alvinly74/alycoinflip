@@ -46,6 +46,7 @@ def webook():
                     try:
                         function, inputs = message_text.split(None, 1)
                     except ValueError:
+                        function = "error"
                         continue
                     response = "Sorry, I do not recognize the input"
                     # does the 'flip' option
