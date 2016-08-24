@@ -68,9 +68,17 @@ def webook():
                     # does the bill split option how wird
                     # to use, first number is how much to tip in $XX.XX form
                     # second number is how much the tax.
-                    elif function == "split" and check_valid_split(inputs):
-                        log(inputs)
-                        response = "split"
+                    elif function == "split" and check_valid_split(inputs): 
+                        tip_value = inputs[0]
+                        tax_value = inputs[1]
+                        prices = inputs[2:]
+                        log("tip = {0}, tax = {1} prices = {2}".format(tip_value, tax_value, prices))
+                        prices = do_split(tip_value, tax_value, prices)
+                        response = ""
+                        for price, idx in enumerate(prices):
+                            response += "person {0} owes: {1}\n".format(idx + 1, price)
+                            
+                        
                     
                     send_message(sender_id, response)
 
