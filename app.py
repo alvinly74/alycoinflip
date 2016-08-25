@@ -34,7 +34,7 @@ def webook():
         for entry in data["entry"]:
             for messaging_event in entry["messaging"]:
 
-                if messaging_event.get("message"):  
+                if messaging_event.get("message"):
                     # someone sent us a message
                     # the facebook ID of the person sending you the message
                     sender_id = messaging_event["sender"]["id"]
@@ -83,8 +83,8 @@ def webook():
                         response += "The grand total I calculated is ${0} due to rounding.\n".format(sum(prices))
                         inputs = map(float, inputs)
                         response += "The grand total of the numbers inputted is ${0}.".format(sum(inputs))
-                        
-                            
+
+
                     send_message(sender_id, response)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
@@ -143,7 +143,7 @@ def check_valid_tip(inputs):
 def do_tip(price):
     price = float(price)
     tip_amounts = []
-    tip_percentages = [.10, .125, .15, .175, 20]
+    tip_percentages = [.10, .125, .15, .175, .20]
     for percentage in tip_percentages:
         percent_string = str(percentage * 100) + "%"
         value = ceil(price * percentage * 100)/100
