@@ -153,6 +153,8 @@ def check_valid_tip(inputs):
     as long as contents is a number and not "NaN" or "not a number",
     this is good.
     """
+    #inputs is always an array of 1 string.
+    inputs = inputs[0]
     try:
         costs = float(inputs)
         if costs == float("nan"):
