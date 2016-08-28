@@ -166,7 +166,6 @@ def check_valid_tip(inputs):
 
 
 def do_tip(price):
-    price = float(price)
     tip_amounts = []
     tip_percentages = [.10, .125, .15, .175, .20]
     for percentage in tip_percentages:
