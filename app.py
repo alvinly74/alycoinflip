@@ -169,8 +169,10 @@ def do_tip(price):
     tip_amounts = []
     tip_percentages = [.10, .125, .15, .175, .20]
     for percentage in tip_percentages:
+        log("price is type {0}".format(type(price)))
+        log("percentage is type {0}".format(type(percentage)))
         percent_string = str(percentage * 100) + "%"
-        value = ceil(price * percentage * float(100))/100
+        value = ceil(price * percentage * 100)/100
         res_string = "{0}: {1}".format(percent_string,
                                        value)
         tip_amounts.append(res_string)
