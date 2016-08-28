@@ -106,7 +106,7 @@ def clean_message(message_text):
     returns string "function"
     and list of strings "inputs"
     """
-    message_text = re.sub('[^a-zA-Z0-9 \.]', '', message_text)
+    message_text sub('[^a-zA-Z0-9 \.]', '', message_text)
     message_text = message_text.lower()
     values = message_text.split()
     function = values[0].lower()
@@ -128,6 +128,7 @@ def prep_flips(inputs):
     """
     num_flips = int(inputs[0])
     possibilities = inputs[1:]
+    return [num_flips, possibilities]
 
 def do_flips(num_flips, possibilities):
     """
