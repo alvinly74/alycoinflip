@@ -44,7 +44,7 @@ def webook():
                     # the message's text
                     message_text = messaging_event["message"]["text"]
                     try:
-                        function, inputs = message_text.split(None, 1)
+                        function, inputs = clean_message(message_text)
                     except ValueError:
                         log("and we got an error")
                         function = "help"
@@ -55,8 +55,7 @@ def webook():
                     # all of the other items
                     # after will be the items we sample from
                     if function == "flip" and check_valid_flip(inputs):
-                        num_flips, possibilities = inputs.split(None, 1)
-                        possibilities = possibilities.split()
+                        num_flips, possibilities = prep_flips(inputs)
                         response = "I flipped {0} time(s), and got:\n".format(num_flips)
                         distribution = do_flips(num_flips, possibilities)
                         for option, count in distribution.iteritems():
@@ -71,7 +70,6 @@ def webook():
                     # to use, first number is how much to tip in $XX.XX form
                     # second number is how much the tax.
                     elif function == "split" and check_valid_split(inputs):
-                        inputs = inputs.split()
                         tip_value = inputs[0]
                         tax_value = inputs[1]
                         prices = inputs[2:]
@@ -99,6 +97,21 @@ def webook():
     return "ok", 200
 
 
+def clean_message(message_text):
+    """
+    gets rid of special characters that aren't space or periods, and lower
+    cases the text.
+    returns string "function"
+    and list of strings "inputs"
+    """
+    message_text = re.sub('[^a-zA-Z0-9 \.]', '', message_text)
+    message_text = message_text.lower()
+    values = message_text.split()
+    function = values[0].lower()
+    inputs = values[1:]
+    return [function, inputs]
+
+
 def check_valid_flip(inputs):
     # we need at least 3, number of sample, and at least two possibilities
     if len(inputs) > 2 and inputs[0].isdigit():
@@ -106,6 +119,13 @@ def check_valid_flip(inputs):
 
     return False
 
+def prep_flips(inputs):
+    """
+    given inputs, returns number of flips as number, and possibilities
+    as list of string
+    """
+    num_flips = int(inputs[0])
+    possibilities = inputs[1:]
 
 def do_flips(num_flips, possibilities):
     """
@@ -157,7 +177,6 @@ def check_valid_split(inputs):
     """
     tries to check if all inputs we have are valid numbers(floats)
     """
-    inputs = inputs.split()
     try:
         log("we got inputs {0}".format(inputs))
         log("type = {0}".format(type(inputs)))
