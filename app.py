@@ -43,6 +43,7 @@ def webook():
                     recipient_id = messaging_event["recipient"]["id"]
                     # the message's text
                     message_text = messaging_event["message"]["text"]
+                    log("we received message: '{0}'".format(message_text))
                     try:
                         function, inputs = clean_message(message_text)
                     except ValueError:
