@@ -52,6 +52,7 @@ def webook():
                         function = "help"
                         continue
                     response = "Sorry, I do not recognize the input"
+                    
                     # does the 'flip' option
                     # to use, first number determines how many flips,
                     # all of the other items
@@ -62,12 +63,14 @@ def webook():
                         distribution = do_flips(num_flips, possibilities)
                         for option, count in distribution.iteritems():
                             response += "{0}: {1}\n".format(option, count)
+                            
                     # does the tip calculations
                     elif function == "tip" and check_valid_tip(inputs):
                         tip_values = do_tip(inputs)
                         response = "Here are some percentages for bill [${0}]:\n".format(inputs)
                         for value in tip_values:
                             response += "{0}\n".format(value)
+                            
                     # does the bill split option how wird
                     # to use, first number is how much to tip in $XX.XX form
                     # second number is how much the tax.
@@ -84,6 +87,7 @@ def webook():
                         inputs = map(float, inputs)
                         response += "The grand total of the numbers inputted is ${0}.".format(sum(inputs))
 
+                    elif function == "help":
 
                     send_message(sender_id, response)
 
@@ -107,7 +111,6 @@ def clean_message(message_text):
     and list of strings "inputs"
     """
     message_text = re.sub('[^a-zA-Z0-9 \.]', '', message_text)
-    message_text = message_text.lower()
     values = message_text.split()
     function = values[0].lower()
     inputs = values[1:]
@@ -171,7 +174,7 @@ def do_tip(price):
     tip_percentages = [.10, .125, .15, .175, .20]
     for percentage in tip_percentages:
         percent_string = str(percentage * 100) + "%"
-        value = ceil(price * percentage * 100)/100
+        value = (price * percentage * 100)/100
         res_string = "{0}: {1}".format(percent_string,
                                        value)
         tip_amounts.append(res_string)
