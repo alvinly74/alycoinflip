@@ -66,8 +66,8 @@ def webook():
                             
                     # does the tip calculations
                     elif function == "tip" and check_valid_tip(inputs):
-                        inputs = str(inputs)
                         tip_values = do_tip(inputs)
+                        inputs = str(inputs)
                         response = "Here are some percentages for bill [${0}]:\n".format(inputs)
                         for value in tip_values:
                             response += "{0}\n".format(value)
@@ -176,7 +176,7 @@ def do_tip(price):
     tip_percentages = [.10, .125, .15, .175, .20]
     for percentage in tip_percentages:
         percent_string = str(percentage * 100) + "%"
-        value = (price * percentage * 100)/100
+        value = round((price * percentage) + price, 2)
         res_string = "{0}: {1}".format(percent_string,
                                        value)
         tip_amounts.append(res_string)
