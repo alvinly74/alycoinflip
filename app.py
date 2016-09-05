@@ -88,8 +88,8 @@ def webook():
                         response += "The grand total of the numbers inputted is ${0}.".format(sum(inputs))
 
                     elif function == "help":
-                        response = "something went wrong, please type " + 
-                        "'help tip', 'help flip' or 'help split' for more info"
+                        response = "something went wrong, please type 'help tip', 'help flip' or 'help split' for more info"
+                        
                     send_message(sender_id, response)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
