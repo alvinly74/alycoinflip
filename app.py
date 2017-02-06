@@ -93,9 +93,10 @@ def webook():
                     elif function == "draft":
                         queue = []
                         while inputs:
-                            random_index = inputs[random.randint(len(inputs) - 1)]
+                            random_index = inputs[random.randint(0, len(inputs) - 1)]
                             queue.append(random_index)
                             del inputs[random_index]
+                        response = ", ".join(queue)
 
                     elif function == "help":
                         response = "something went wrong, please type 'help tip', 'help flip' or 'help split' for more info"
