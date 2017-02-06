@@ -59,6 +59,8 @@ def webook():
                     # after will be the items we sample from
                     if function == "flip" and check_valid_flip(inputs):
                         num_flips, possibilities = prep_flips(inputs)
+                        if num_flips > 1000:
+                            num_flips = 1000
                         response = "I flipped {0} time(s), and got:\n".format(num_flips)
                         distribution = do_flips(num_flips, possibilities)
                         for option, count in distribution.iteritems():
@@ -87,6 +89,13 @@ def webook():
                         response += "The grand total I calculated is ${0} due to rounding.\n".format(sum(prices))
                         inputs = map(float, inputs)
                         response += "The grand total of the numbers inputted is ${0}.".format(sum(inputs))
+
+                    elif function == "draft":
+                        queue = []
+                        while inputs:
+                            random_index = inputs[random.randint[len(inputs) - 1]]
+                            queue.append(random_index)
+                            del inputs[random_index]
 
                     elif function == "help":
                         response = "something went wrong, please type 'help tip', 'help flip' or 'help split' for more info"
