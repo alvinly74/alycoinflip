@@ -93,8 +93,8 @@ def webook():
                     elif function == "draft":
                         queue = []
                         while inputs:
-                            random_index = inputs[random.randint(0, len(inputs) - 1)]
-                            queue.append(random_index)
+                            random_index = random.randint(0, len(inputs) - 1)
+                            queue.append(inputs[random_index])
                             del inputs[random_index]
                         response = ", ".join(queue)
 
